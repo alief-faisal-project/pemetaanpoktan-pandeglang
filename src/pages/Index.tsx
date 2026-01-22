@@ -202,12 +202,12 @@ const Index = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              Pemetaan Petani{" "}
+              Pemetaan Poktan{" "}
               <span className="text-primary">Kabupaten Pandeglang</span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md font-light">
-              Website pemetaan dan pengelolaan kelompok petani padi di seluruh
+              Website simulasi pemetaan dan pengelolaan kelompok petani padi di seluruh
               wilayah Kabupaten Pandeglang, Banten.
             </p>
 
