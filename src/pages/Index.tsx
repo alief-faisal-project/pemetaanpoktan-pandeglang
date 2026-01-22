@@ -2,12 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Layout } from "@/components/layout/Layout";
 import { StatCard } from "@/components/cards/StatCard";
 import { DistrictCard } from "@/components/cards/DistrictCard";
-import {
-  getDistricts,
-  getTotalStats,
-  searchGroups,
-  farmerGroups,
-} from "@/data/farmerGroups";
+import { getDistricts, getTotalStats, searchGroups, farmerGroups } from "@/data/farmerGroups";
 import { staggerContainer } from "@/components/layout/PageTransition";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,7 +23,7 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 
-/* ================= CONTACT SECTION (ASLI) ================= */
+/* ================= CONTACT SECTION ================= */
 
 const ContactSection = () => {
   const [name, setName] = useState("");
@@ -39,7 +34,7 @@ const ContactSection = () => {
     e.preventDefault();
     const subject = encodeURIComponent(`Pesan dari ${name}`);
     const body = encodeURIComponent(
-      `Nama: ${name}\nEmail: ${email}\n\nPesan:\n${message}`,
+      `Nama: ${name}\nEmail: ${email}\n\nPesan:\n${message}`
     );
     window.location.href = `mailto:alieffaisal222@gmail.com?subject=${subject}&body=${body}`;
   };
@@ -56,10 +51,7 @@ const ContactSection = () => {
         >
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-primary/10 mb-4">
-              <FontAwesomeIcon
-                icon={faEnvelope}
-                className="h-7 w-7 text-primary"
-              />
+              <FontAwesomeIcon icon={faEnvelope} className="h-7 w-7 text-primary" />
             </div>
             <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-3">
               Kirim Masukan
@@ -75,11 +67,7 @@ const ContactSection = () => {
           >
             <div className="space-y-2">
               <Label>Nama</Label>
-              <Input
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <Input value={name} onChange={(e) => setName(e.target.value)} required />
             </div>
             <div className="space-y-2">
               <Label>Email</Label>
@@ -99,11 +87,7 @@ const ContactSection = () => {
                 required
               />
             </div>
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full gap-2 font-medium"
-            >
+            <Button type="submit" size="lg" className="w-full gap-2 font-medium">
               <FontAwesomeIcon icon={faPaperPlane} />
               Kirim Pesan
             </Button>
@@ -170,19 +154,22 @@ const Index = () => {
             style={{ y: textY, opacity }}
             className="text-center max-w-3xl mx-auto"
           >
-            <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
+            <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
               Pemetaan Poktan Padi di Wilayah{" "}
               <span className="text-primary">Kabupaten Pandeglang</span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/90 mb-8 font-light">
-              Website simulasi pemetaan dan pengelolaan kelompok petani padi
+              Website pemetaan dan pengelolaan kelompok petani padi 
+              di seluruh wilayah Kabupaten Pandeglang, Banten.
             </p>
 
-            {/* ===== SATU-SATUNYA PERUBAHAN ADA DI SINI ===== */}
-            <motion.div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full">
+            {/* ✅ BUTTON RESPONSIVE (SATU-SATUNYA PERUBAHAN) */}
+            <motion.div
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full"
+            >
               <Link to="/map" className="w-full sm:w-auto">
-                <Button size="lg" className="w-full sm:w-auto gap-2">
+                <Button size="lg" className="w-full sm:w-auto gap-2 bg-primary hover:bg-primary/90 shadow-lg font-medium">
                   <FontAwesomeIcon icon={faMapLocationDot} />
                   Buka Peta Persebaran
                 </Button>
@@ -192,12 +179,13 @@ const Index = () => {
                 variant="outline"
                 size="lg"
                 asChild
-                className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20"
+                className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 font-medium"
                 onClick={(e) => {
                   e.preventDefault();
-                  document
-                    .getElementById("districts")
-                    ?.scrollIntoView({ behavior: "smooth" });
+                  document.getElementById("districts")?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
                 }}
               >
                 <a href="#districts">Kecamatan Terdaftar</a>
@@ -207,7 +195,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ================= STATS (ASLI — TIDAK DIUBAH) ================= */}
+      {/* ================= STATS (ASLI — NORMAL) ================= */}
       <section className="py-12 bg-muted/30">
         <div className="container">
           <div className="hidden md:grid md:grid-cols-3 gap-6">
@@ -215,29 +203,38 @@ const Index = () => {
               icon={faUsers}
               value={stats.totalGroups}
               label="Total Kelompok Tani"
+              delay={0}
+              href="/all-groups"
+              hoverVariant="secondary"
             />
             <StatCard
               icon={faBuilding}
               value={stats.totalDistricts}
               label="Kecamatan"
+              delay={0.1}
+              href="/all-districts"
+              hoverVariant="secondary"
             />
             <StatCard
               icon={faUsers}
               value={stats.totalMembers}
               label="Total Anggota"
+              delay={0.2}
+              href="/all-members"
+              hoverVariant="secondary"
             />
           </div>
 
           <div className="md:hidden overflow-x-auto scrollbar-hide">
-            <div
-              className="flex gap-4 pb-2"
-              style={{ minWidth: "max-content" }}
-            >
+            <div className="flex gap-4 pb-2" style={{ minWidth: "max-content" }}>
               <div className="w-[280px] flex-shrink-0">
                 <StatCard
                   icon={faUsers}
                   value={stats.totalGroups}
                   label="Total Kelompok Tani"
+                  delay={0}
+                  href="/all-groups"
+                  hoverVariant="secondary"
                 />
               </div>
               <div className="w-[280px] flex-shrink-0">
@@ -245,6 +242,9 @@ const Index = () => {
                   icon={faBuilding}
                   value={stats.totalDistricts}
                   label="Kecamatan"
+                  delay={0.1}
+                  href="/all-districts"
+                  hoverVariant="secondary"
                 />
               </div>
               <div className="w-[280px] flex-shrink-0">
@@ -252,6 +252,9 @@ const Index = () => {
                   icon={faUsers}
                   value={stats.totalMembers}
                   label="Total Anggota"
+                  delay={0.2}
+                  href="/all-members"
+                  hoverVariant="secondary"
                 />
               </div>
             </div>
@@ -266,6 +269,7 @@ const Index = () => {
             variants={staggerContainer}
             initial="hidden"
             whileInView="show"
+            viewport={{ once: true, margin: "-100px" }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           >
             {filteredDistricts.map((district) => (
