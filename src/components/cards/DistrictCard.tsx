@@ -36,7 +36,7 @@ export const DistrictCard = ({ district }: DistrictCardProps) => {
           >
             <FontAwesomeIcon icon={faMapLocationDot} className="h-6 w-6 text-primary" />
           </motion.div>
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary text-primary-foreground">
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary">
             <FontAwesomeIcon icon={faUsers} className="h-3.5 w-3.5" />
             <span className="font-medium text-sm">{district.totalMembers} Anggota</span>
           </div>

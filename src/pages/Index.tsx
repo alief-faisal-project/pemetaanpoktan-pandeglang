@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
-import { useRef, useState, useMemo } from "react";
+import { useRef, useState, useMemo, useEffect, useCallback } from "react";
 import heroBackground from "@/assets/hero-background.jpeg";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -132,7 +132,9 @@ const Index = () => {
   const districts = getDistricts();
   const stats = getTotalStats();
   const heroRef = useRef<HTMLElement>(null);
+  const statsScrollRef = useRef<HTMLDivElement>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeStatIndex, setActiveStatIndex] = useState(0);
 
   const { scrollYProgress } = useScroll({
     target: heroRef,
@@ -142,6 +144,24 @@ const Index = () => {
   const backgroundY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+
+  // Handle scroll to detect active stat card
+  const handleStatsScroll = useCallback(() => {
+    if (!statsScrollRef.current) return;
+    const scrollLeft = statsScrollRef.current.scrollLeft;
+    const cardWidth = 280 + 16; // card width + gap
+    const index = Math.round(scrollLeft / cardWidth);
+    setActiveStatIndex(Math.min(Math.max(index, 0), 2));
+  }, []);
+
+  useEffect(() => {
+    const scrollContainer = statsScrollRef.current;
+    if (!scrollContainer) return;
+
+    scrollContainer.addEventListener("scroll", handleStatsScroll);
+    return () =>
+      scrollContainer.removeEventListener("scroll", handleStatsScroll);
+  }, [handleStatsScroll]);
 
   // Get all districts once (stable reference)
   const allDistricts = useMemo(() => getDistricts(), []);
@@ -202,12 +222,12 @@ const Index = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              Pemetaan Poktan{" "}
+              Pemetaan Petani{" "}
               <span className="text-primary">Kabupaten Pandeglang</span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md font-light">
-              Website simulasi pemetaan dan pengelolaan kelompok petani padi di seluruh
+              Website simulasi pemetaan dan pengelolaan kelompok petani komoditas padi di seluruh
               wilayah Kabupaten Pandeglang, Banten.
             </p>
 
@@ -215,7 +235,7 @@ const Index = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="flex flex-col md:flex-row flex-wrap items-center justify-center gap-4"
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <Link to="/map">
                 <Button
@@ -226,14 +246,14 @@ const Index = () => {
                     icon={faMapLocationDot}
                     className="h-5 w-5"
                   />
-                  Buka Peta Interaktif
+                  Peta Persebaran Poktan
                 </Button>
               </Link>
               <Button
                 variant="outline"
                 size="lg"
                 asChild
-                className="bg-white/10 border-white/30 text-white hover:bg-white/20 backdrop-blur-sm transition-all duration-300 font-medium"
+                className="bg-white/10 border-white/30 text-white hover:bg-white/20 hover:text-white backdrop-blur-sm transition-all duration-300 font-medium"
                 onClick={(e) => {
                   e.preventDefault();
                   document.getElementById("districts")?.scrollIntoView({
@@ -248,7 +268,7 @@ const Index = () => {
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  Jelajahi Kecamatan
+                  Telusuri Kecamatan
                 </motion.a>
               </Button>
             </motion.div>
@@ -288,41 +308,64 @@ const Index = () => {
           </div>
 
           {/* Mobile: Horizontal scroll carousel */}
-          <div className="md:hidden overflow-x-auto scrollbar-hide">
+          <div className="md:hidden">
             <div
-              className="flex gap-4 pb-2"
-              style={{ minWidth: "max-content" }}
+              ref={statsScrollRef}
+              className="overflow-x-auto scrollbar-hide"
             >
-              <div className="w-[280px] flex-shrink-0">
-                <StatCard
-                  icon={faUsers}
-                  value={stats.totalGroups}
-                  label="Total Kelompok Tani"
-                  delay={0}
-                  href="/all-groups"
-                  hoverVariant="secondary"
-                />
+              <div
+                className="flex gap-4 pb-2"
+                style={{ minWidth: "max-content" }}
+              >
+                <div className="w-[280px] flex-shrink-0">
+                  <StatCard
+                    icon={faUsers}
+                    value={stats.totalGroups}
+                    label="Total Kelompok Tani"
+                    delay={0}
+                    href="/all-groups"
+                    hoverVariant="secondary"
+                  />
+                </div>
+                <div className="w-[280px] flex-shrink-0">
+                  <StatCard
+                    icon={faBuilding}
+                    value={stats.totalDistricts}
+                    label="Kecamatan"
+                    delay={0.1}
+                    href="/all-districts"
+                    hoverVariant="secondary"
+                  />
+                </div>
+                <div className="w-[280px] flex-shrink-0">
+                  <StatCard
+                    icon={faUsers}
+                    value={stats.totalMembers}
+                    label="Total Anggota"
+                    delay={0.2}
+                    href="/all-members"
+                    hoverVariant="secondary"
+                  />
+                </div>
               </div>
-              <div className="w-[280px] flex-shrink-0">
-                <StatCard
-                  icon={faBuilding}
-                  value={stats.totalDistricts}
-                  label="Kecamatan"
-                  delay={0.1}
-                  href="/all-districts"
-                  hoverVariant="secondary"
+            </div>
+
+            {/* Carousel Indicators */}
+            <div className="flex justify-center gap-2 mt-4">
+              {[0, 1, 2].map((index) => (
+                <motion.div
+                  key={index}
+                  className="h-2 rounded-full bg-primary/30"
+                  animate={{
+                    width: activeStatIndex === index ? 24 : 8,
+                    backgroundColor:
+                      activeStatIndex === index
+                        ? "hsl(var(--primary))"
+                        : "hsl(var(--primary) / 0.3)",
+                  }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                 />
-              </div>
-              <div className="w-[280px] flex-shrink-0">
-                <StatCard
-                  icon={faUsers}
-                  value={stats.totalMembers}
-                  label="Total Anggota"
-                  delay={0.2}
-                  href="/all-members"
-                  hoverVariant="secondary"
-                />
-              </div>
+              ))}
             </div>
           </div>
         </div>
