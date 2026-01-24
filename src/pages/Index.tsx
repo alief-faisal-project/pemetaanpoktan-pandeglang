@@ -222,7 +222,7 @@ const Index = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              Pemetaan Poktan{" "}
+              Pemetaan Poktan Padi{" "}
               <span className="text-primary">Kabupaten Pandeglang</span>
             </h1>
 
