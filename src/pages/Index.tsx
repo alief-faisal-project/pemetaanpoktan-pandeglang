@@ -145,7 +145,7 @@ const Index = () => {
   const textY = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
   const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
-  // Handle scroll to detect active stat card
+  // pengguliran untuk mendeteksi kartu/carousel statistik yang aktif
   const handleStatsScroll = useCallback(() => {
     if (!statsScrollRef.current) return;
     const scrollLeft = statsScrollRef.current.scrollLeft;
@@ -163,7 +163,7 @@ const Index = () => {
       scrollContainer.removeEventListener("scroll", handleStatsScroll);
   }, [handleStatsScroll]);
 
-  // Get all districts once (stable reference)
+  // Get all districts
   const allDistricts = useMemo(() => getDistricts(), []);
 
   // Filter districts based on search query (searches groups, districts)
@@ -222,13 +222,13 @@ const Index = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-lg">
-              Pemetaan Petani{" "}
+              Pemetaan Poktan{" "}
               <span className="text-primary">Kabupaten Pandeglang</span>
             </h1>
 
             <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-md font-light">
-              Website simulasi pemetaan dan pengelolaan kelompok petani komoditas padi di seluruh
-              wilayah Kabupaten Pandeglang, Banten.
+              Website simulasi pemetaan dan pengelolaan kelompok petani
+              komoditas padi di seluruh wilayah Kabupaten Pandeglang, Banten.
             </p>
 
             <motion.div
@@ -268,7 +268,7 @@ const Index = () => {
                   whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
-                  Telusuri Kecamatan
+                  Kecamatan Terdaftar
                 </motion.a>
               </Button>
             </motion.div>
