@@ -14,20 +14,35 @@ interface FloatingWhatsAppProps {
   message: string;
 }
 
-export const FloatingWhatsApp = ({ phoneNumber, message }: FloatingWhatsAppProps) => {
+export const FloatingWhatsApp = ({
+  phoneNumber,
+  message,
+}: FloatingWhatsAppProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const contactSection = document.getElementById("contact-section");
-      
+      const footer = document.querySelector("footer");
+
       if (contactSection) {
-        const rect = contactSection.getBoundingClientRect();
+        const contactRect = contactSection.getBoundingClientRect();
         const windowHeight = window.innerHeight;
-        
-        // Show when contact section is in viewport
-        const isInView = rect.top < windowHeight && rect.bottom > 0;
-        setIsVisible(isInView);
+
+        // Check if contact section is in viewport
+        const isContactInView =
+          contactRect.top < windowHeight && contactRect.bottom > 0;
+
+        // Check if footer is in viewport
+        let isFooterInView = false;
+        if (footer) {
+          const footerRect = footer.getBoundingClientRect();
+          isFooterInView =
+            footerRect.top < windowHeight && footerRect.bottom > 0;
+        }
+
+        // Show only when contact section is visible AND footer is not visible
+        setIsVisible(isContactInView && !isFooterInView);
       } else {
         setIsVisible(false);
       }
@@ -42,7 +57,10 @@ export const FloatingWhatsApp = ({ phoneNumber, message }: FloatingWhatsAppProps
   const handleClick = () => {
     const formattedPhone = phoneNumber.replace(/^0/, "62");
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/${formattedPhone}?text=${encodedMessage}`, "_blank");
+    window.open(
+      `https://wa.me/${formattedPhone}?text=${encodedMessage}`,
+      "_blank",
+    );
   };
 
   return (
@@ -62,30 +80,32 @@ export const FloatingWhatsApp = ({ phoneNumber, message }: FloatingWhatsAppProps
                 className="fixed bottom-6 right-6 z-50 w-14 h-14 md:w-16 md:h-16 rounded-full bg-primary shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center"
                 aria-label="Chat via WhatsApp"
               >
-                {/* Wave animation - smooth continuous flow */}
                 <motion.span
-                  className="absolute inset-0 rounded-full border-2 border-primary"
-                  animate={{ 
-                    scale: [1, 1.4], 
-                    opacity: [0.7, 0] 
+                  className="absolute inset-0 rounded-full border border-primary/50"
+                  animate={{
+                    scale: [1.05, 1.2, 1.35, 1.5],
+                    opacity: [0.5, 0.35, 0.15, 0],
                   }}
                   transition={{
-                    duration: 1.5,
+                    duration: 2.8,
                     repeat: Infinity,
+                    repeatType: "loop",
                     ease: "linear",
                   }}
                 />
+
                 <motion.span
-                  className="absolute inset-0 rounded-full border-2 border-primary"
-                  animate={{ 
-                    scale: [1, 1.4], 
-                    opacity: [0.7, 0] 
+                  className="absolute inset-0 rounded-full border border-primary/50"
+                  animate={{
+                    scale: [1.05, 1.2, 1.35, 1.5],
+                    opacity: [0.5, 0.35, 0.15, 0],
                   }}
                   transition={{
-                    duration: 1.5,
+                    duration: 2.8,
                     repeat: Infinity,
+                    repeatType: "loop",
                     ease: "linear",
-                    delay: 0.75,
+                    delay: 1.4,
                   }}
                 />
                 <FontAwesomeIcon
