@@ -7,7 +7,6 @@ import { faHouse, faMapLocationDot } from "@fortawesome/free-solid-svg-icons";
 import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 const navLinks: { href: string; label: string; icon: IconDefinition }[] = [
-  { href: "/", label: "Beranda", icon: faHouse },
   { href: "/map", label: "Peta", icon: faMapLocationDot },
 ];
 
@@ -43,13 +42,15 @@ export const Header = () => {
             return (
               <Link key={link.href} to={link.href}>
                 <Button
-                  variant={isActive ? "secondary" : "ghost"}
+                  variant="secondary"
                   size="sm"
-                  className="relative overflow-hidden gap-2"
+                  className={`relative overflow-hidden gap-2 ${
+                    isActive ? "" : "bg-transparent hover:bg-transparent"
+                  }`}
                 >
-                  <FontAwesomeIcon 
-                    icon={link.icon} 
-                    className="h-4 w-4 text-primary"
+                  <FontAwesomeIcon
+                    icon={link.icon}
+                    className="h-5 w-5 text-primary"
                   />
                   <span className="hidden sm:inline font-medium">
                     {link.label}

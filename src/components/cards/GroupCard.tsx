@@ -23,7 +23,7 @@ export const GroupCard = ({ group }: GroupCardProps) => {
 
       <div className="p-6">
         <div className="flex items-start justify-between mb-3">
-          <Badge className="bg-primary text-primary-foreground hover:bg-primary/90">
+          <Badge className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-s">
             {group.commodity}
           </Badge>
           <div className="flex items-center gap-1 text-sm text-muted-foreground">

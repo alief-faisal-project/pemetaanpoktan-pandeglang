@@ -188,7 +188,7 @@ export const farmerGroups: FarmerGroup[] = [
     districtSlug: "cisata",
     village: "Sukamanah",
     phone: "08245678901",
-    latitude: -6.3890,
+    latitude: -6.389,
     longitude: 106.0234,
   },
   {
@@ -290,7 +290,9 @@ export const getDistricts = (): District[] => {
     }
   });
 
-  return Array.from(districtMap.values()).sort((a, b) => a.name.localeCompare(b.name));
+  return Array.from(districtMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
 };
 
 export const getGroupsByDistrict = (slug: string): FarmerGroup[] => {
@@ -321,6 +323,6 @@ export const searchGroups = (query: string): FarmerGroup[] => {
       group.name.toLowerCase().includes(lowerQuery) ||
       group.village.toLowerCase().includes(lowerQuery) ||
       group.chairperson.toLowerCase().includes(lowerQuery) ||
-      group.district.toLowerCase().includes(lowerQuery)
+      group.district.toLowerCase().includes(lowerQuery),
   );
 };

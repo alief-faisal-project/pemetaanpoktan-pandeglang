@@ -264,8 +264,6 @@ const Index = () => {
               >
                 <motion.a
                   href="#districts"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 >
                   Kecamatan Terdaftar
